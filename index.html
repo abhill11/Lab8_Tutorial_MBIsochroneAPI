@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://guides.github.com/introduction/git-handbook/ -->
+<html lang="en">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+      <title>Lab 8 Option - Mapbox Isochrone API</title>
+      <!-- <link rel="icon" type="image/x-icon" href="https://guides.github.com/favicon.ico"> -->
+
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+      <link rel="stylesheet" href="gridism.css">
+      <link rel="stylesheet" href="markdown.css">
+      <link rel="stylesheet" href="octicons.css">
+      <link href="main.css" rel="stylesheet">
+      <link href="pygments.css" rel="stylesheet">
+
+      <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+      <link href="prism.css" rel="stylesheet" />
+
+      <script type="text/javascript" async="" src="ga.js"></script><script src="jquery.js" type="text/javascript"></script>
+      <script src="snap.svg-min.js" type="text/javascript"></script>
+      <script src="application.js" type="text/javascript"></script>
+
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-3769691-29']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
+
+    </head>
+
+    <body style="background-color:#501490">
+
+        <article class="full">
+            <div class="article-heading js-article-heading js-geopattern" style="background-color:#501490">
+                <div class="wrap">
+                  <h1>Mapbox Isochrone API</h1>
+                  <p style="color:#FFC300"><b><i class="fa fa-spinner fa-spin"></i>  Lab 8 Option </b></p>
+                </div>
+            </div>
+
+            <div class="wrap">
+                <div class="toc-wrapper"><ol class="toc js-toc sticky"></ol></div>
+
+                <div class="markdown-body content-body">
+
+
+                  <p><a id="overview" title="Overview" class="toc-item"></a></p>
+                  <h3><i class="fa fa-asterisk"></i> Overview</h3>
+
+                    <p><i class="fa fa-spinner fa-spin"></i>  You You will need to be able to login to your <a href='https://mapbox.com'>Mapbox</a> account, that was created earlier in the course, to get your personal mapbox Access Token. You may also wish to use their studio to customize the look of maps later </p>
+                    <p><i class="fa fa-spinner fa-spin"></i>  This API from Mapbox will create travel time Isochrones in a specified interval around a central point. This works by inquiring to Mapbox’s API servers to get routing information away from a specified point. Mode of transportation and time of travel can be selected by a floating control panel on the map. </p>
+                    <p><i class="fa fa-spinner fa-spin"></i>  API stands for Application Programming Interface, which means that it is a prewritten and reusable portion of code that will perform a certain function. This function can be called upon and used by others without them needing to write from scratch or even know what the actual coding looks like or how to write it.</p>
+                    <p><i class="fa fa-spinner fa-spin"></i>  Isochrone refers to a line that bounds equal travel times from a given location. They appear on a map like contour lines on a topographic elevation map or may also be displayed as polygons. They are irregular in shape so the Isochrone line may appear as a diamond or cross depending upon the street network or skewed with tendrils traveling down interstates and major roads. </P>
+
+
+
+                  <p><a id="Begin" title="To Begin" class="toc-item"></a></p>
+                  <h3><i class="fa fa-asterisk"></i> To Begin</h3>
+                   <p>In a code editor, create a new html file and add the initial block of code below</p>
+                   *Check the comments of the code as you go along for help on where to insert later sections*<br>
+                   <ul>
+                       <li>Notice that this code will be importing some new libraries. More information can be found at the library links<br>
+                            Mapbox GL JS: <a href='https://docs.mapbox.com/mapbox-gl-js/api/'>https://docs.mapbox.com/mapbox-gl-js/api/</a> <br>
+                            Assembly: <a href='https://labs.mapbox.com/assembly/'>https://labs.mapbox.com/assembly/</a>  <br>
+                            JQuery: <a href='https://jquery.com/'>https://jquery.com/</a>                  </li></ul><br>
+
+
+<!-- The first Code Block -->
+                   <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;meta charset='utf-8'&gt;
+      &lt;title&gt;Lab 8 Option - Mapbox Isochrone API&lt;/title&gt;
+      &lt;meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' /&gt;
+      &lt;!-- Import Mapbox GL JS  --&gt;
+      &lt;script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'&gt&lt/script&gt;
+      &lt;link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' /&gt;
+      &lt;!-- Import Assembly --&gt;
+      &lt;link href='https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.min.css' rel='stylesheet'&gt;
+      &lt;script src='https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.js'&gt&lt/script&gt;
+      &lt;!-- Import jQuery --&gt;
+      &lt;script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'&gt&lt/script&gt;
+
+    &lt;!-- This style section will make the map appear full screen --&gt;
+      &lt;style&gt;
+        body {
+          margin: 0;
+          padding: 0;
+        }
+
+        #map {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 100%;
+        }
+      &lt;/style&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+      &lt;!-- Create a container for the map --&gt;
+      &lt;div id='map'&gt&lt/div&gt;
+
+    &lt;!-- You will Insert the code specifying the time interval controls here!!!!!!! --&gt;
+
+      &lt;script&gt;
+        mapboxgl.accessToken = 'add your mapbox access token here'; // Add your Mapbox access token
+        var map = new mapboxgl.Map({ //more about Mapbox GL here https://docs.mapbox.com/mapbox-gl-js/api/
+          container: 'map', // Specify the container ID
+          style: 'mapbox://styles/mapbox/streets-v11', // Specify which map style to use, this is the basic mapbox street layer, but can be changed to a custom style if created in the mapbox studio this can be changed
+          center: [-87.7187, 41.9804], // Specify the starting position, NEIU here
+          zoom: 11, // Specify the starting zoom
+        });
+
+        // Insert the variable for the ISO here!!!
+      &lt;/script&gt;
+    &lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+                       </li>
+                       <li>Be sure to insert your unique mapbox access token or the map will not display. Insert it into this line of code </li>
+                        mapboxgl.accessToken = <b>'add your mapbox access token here'</b>; // Add your Mapbox access token<br><br>
+                    <li>If you do not know how to get your token: Once logged in to Mapbox.com > click the astronaut logo in the top right and select account.</li>
+
+                    <img src="MapboxAccount.jpg" alt="MapboxAccount">
+
+                    <li> You will see your access token on the next page > Copy and paste it in the correct spot within the code</li>
+                    <img src="MapboxAccess.jpg" alt="MapboxAccessToken">
+
+                    <li> Note that the container here is referred to as ‘map’ you may title this anything you wish, as in other labs, just be consistent if changing. <p>
+                      The center here is NEIU as that is what is being used later as the isochrone origin point. Note that this center only defines the center for the map to display. This does not have to be the same as the point to use for isochrones, but it should be somewhere nearby of course. <p>
+                        Your map should appear like the one below, full screen with a street basemap. If you wish to change the base layer, you may replace the style portion of the map: 'mapbox://styles/mapbox/streets-v11' with another option. There are several available through your mapbox account and can be customized in the studio. </li>
+
+                    <img src="Basemap.jpg" alt="Basemap">
+
+
+
+                               <!-- <pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.css&quot;
+        integrity=&quot;sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==&quot;
+        crossorigin=&quot;&quot;/&gt;</code></pre>
+                       </li>
+
+                       <li>Also link to the Leaflet JavaScript file in the <code>head</code> section. Make sure you put this AFTER Leaflet's CSS:
+                   <pre><code class="language-html">&lt;script src=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.js&quot;
+        integrity=&quot;sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==&quot;
+        crossorigin=&quot;&quot;&gt;&lt;/script&gt;</code></pre></li>
+                       </ul>
+                    <p>Your <code>map1.html</code> still looks <b>blank</b> at this point as we haven't created any content.</p> -->
+
+
+
+                <p><a id="Controls" title="Add Controls" class="toc-item"></a></p>
+                <h3><i class="fa fa-asterisk"></i> Add Controls</h3>
+                <p>For this map we are going to make it interactive by adding a control panel that will toggle the query for travel mode and time. Each time a button is switched, the API will receive a new query that will draw the appropriate isochrone. </p>
+                   <ul>
+                                  <li>This API can calculate for walking, cycling, and driving. You may include only one, two, or all three.
+                                    The time for travel can be any whole minute interval from 1-60 minutes.<p>
+
+                                    <li>The API documentation states that the API can handle a maximum of 4 times per query string, but here, since a control toggle is being used and only a single time is queried at once, you may specify more than four on the control toggles if needed.<p>
+
+                                    <li>Insert the next block of code within the body of your existing code, below the div container for the map. Notice that this is a new div element. Anything placed within this will be used to style the container for the control panel. This is where you would apply different colors and text to change the display of the controls and position. <p>
+
+
+
+<pre><code class="language-html">&lt;!--Create the Control toggles--&gt;
+&lt;div class='absolute fl my24 mx24 py24 px24 bg-gray-faint round'&gt;
+  &lt;form id='params'&gt;
+    &lt;h4 class='txt-m txt-bold mb6'&gt;Choose a mode of travel:&lt;/h4&gt; &lt;!-- change the string here to edit the text on the control display --&gt;
+&lt;div class='mb12 mr12 toggle-group align-center'&gt;
+  &lt;label class='toggle-container'&gt;
+    &lt;input name='profile' type='radio' value='walking'&gt;
+&lt;div class='toggle toggle--active-null toggle--null'&gt;Walking&lt;/div&gt;
+  &lt;/label&gt;
+
+  &lt;label class='toggle-container'&gt;
+    &lt;input name='profile' type='radio' value='cycling'&gt;
+      &lt;div class='toggle toggle--active-null toggle--null'&gt;Cycling&lt;/div&gt;
+  &lt;/label&gt;
+
+  &lt;label class='toggle-container'&gt;
+    &lt;input name='profile' type='radio' value='driving' checked&gt; &lt;!-- the 'checked' included means that the driving profile will be selected when the map loads --&gt;
+    &lt;div class='toggle toggle--active-null toggle--null'&gt;Driving&lt;/div&gt;
+  &lt;/label&gt;
+
+&lt;/div&gt;
+&lt;h4 class='txt-m txt-bold mb6'&gt;Choose a maximum duration:&lt;/h4&gt;  &lt;!-- change the string here to edit the text on the control display --&gt;
+&lt;div class='mb12 mr12 toggle-group align-center'&gt;
+  &lt;label class='toggle-container'&gt;
+    &lt;input name='duration' type='radio' value='10'&gt;  &lt;!-- change the string here to edit the interval of time that will be queried --&gt;
+    &lt;div class='toggle toggle--active-null toggle--null'&gt;10 min&lt;/div&gt;  &lt;!-- also make sure to update the label here to the correct time --&gt;
+  &lt;/label&gt;
+
+  &lt;label class='toggle-container'&gt;
+    &lt;input name='duration' type='radio' value='30' checked&gt; &lt;!-- the 'checked' included means that the time duration of 30 minutes will be selected when the map loads --&gt;
+    &lt;div class='toggle toggle--active-null toggle--null'&gt;30 min&lt;/div&gt;
+  &lt;/label&gt;
+
+  &lt;label class='toggle-container'&gt;
+    &lt;input name='duration' type='radio' value='45'&gt;
+    &lt;div class='toggle toggle--active-null toggle--null'&gt;45 min&lt;/div&gt;
+    &lt;/label&gt;
+
+&lt;!-- Note that the intervals may be any whole minute interval but has a maximum of 60.
+The section from &lt;label&gt; to &lt;/Label&gt; below specifies the time intervals, you may insert another label feature for a fourth interval, if desired, or edit the value to change the time queried, just be sure to change the label id to match   --&gt;
+&lt;/form&gt;
+
+&lt;/div&gt;</code></pre>
+
+                       <p>Save the code & Reload the map, it should look like the one below with a selectable sidebar of controls. You may Switch the toggles, but they will not have any functionality yet and no isochrones are displaying.</p></li>
+                       <img src='Control.jpg' alt="Control"><p>
+                       <li>Note that upon the map loading, “Driving” & “30 min” are checked. This may be changed in the code by switching which option has the text “checked” included in the input.<br>
+	                        *One thing I have noticed is that if the page is refreshed from the browser, the API pings the default checked options, but the control toggles do not always update back to their default positions. Opening the page again or hitting enter in the address bar instead of refresh avoids this.<p>
+
+                       <li>You should also notice that all three available travel profiles are included, Walking, Cycling, & Driving. There are three options for time of travel, 10,30, & 45. Another may be added by included information in the Label tags. You may remove the comment formatting from the 60 min label at the bottom (ctrl+/ is a shortcut in atom)</li>
+                       <li>You may also wish to change the times here. They can be any whole minute value from 1-60. The value=’30’ part will change the actual inquiry to the API. The 30 min, after the toggle information will change the text displayed on the control. Make sure to update both accordingly when making edits. <br><br>See the code snipped below for clarification on which part.  </li>
+ <pre><code class="language-html">
+ &lt;label class='toggle-container'&gt;
+           &lt;input name='duration' type='radio' value='30' checked&gt; &lt;!-- the 'checked' included means that the time duration of 30 minutes will be selected when the map loads --&gt;
+           &lt;div class='toggle toggle--active-null toggle--null'&gt;30 min&lt;/div&gt;
+         &lt;/label&gt;
+         </code></pre>
+
+                <p><a id="Function" title="Make the Controls Function" class="toc-item"></a></p>
+                    <h3><i class="fa fa-asterisk"></i> Make the Controls Function</h3>
+
+                   <li>Next you will add the functions that will query the API to route the travel mode and time selected in the control sidebar. The function is going to be responsible for sending the compiled query to Mapbox’s API. This is accepted as a single string of text that defines the required and any optional parameters.
+                     <li>If a static map is being created this string could be typed out manually, but since we are making an interactive, dynamic map we are using this function that is able to take relative information and combine it on demand.
+                     <li>Insert the next block of code into the end of the body section, just inside the script tag.</p>
+
+
+
+<pre><code class="language-javascript">
+  // Create variables to use in getIso()
+   //Specify the lat/long of the point that you wish to map distances from. Here we are using NEIU. The profile and minutes specify the default selections that will be selected upon loading.
+   // the profile and minutes here should match what is 'checked' in the code above when the toggle options are set
+  var urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+  var lon = -87.7187;
+  var lat = 41.9804;
+  var profile = 'driving';
+  var minutes = 30;
+
+  // Create a function that sets up the Isochrone API query then makes an Ajax call
+  // This API receives a query in the form of a single string of parameters. This function allows the webpage to compile the string based on the selections made in the control toggle, this will also set the isochrones
+  // to display polygons instead of just lines
+  function getIso() {
+    var query = urlBase + profile + '/' + lon + ',' + lat + '?contours_minutes=' + minutes + '&polygons=true&access_token=' + mapboxgl.accessToken;
+
+    $.ajax({
+      method: 'GET',
+      url: query
+    }).done(function(data) {
+      // Set the 'iso' source's data to what's returned by the API query
+      map.getSource('iso').setData(data);
+    })
+  };
+
+  //You  will insert a point marker here!!!!!!!
+
+  map.on('load', function() {
+   // When the map loads, add the source and layer
+   map.addSource('iso', {
+     type: 'geojson',
+     data: {
+       'type': 'FeatureCollection',
+       'features': []
+     }
+   });
+
+   map.addLayer({
+     'id': 'isoLayer',
+     'type': 'fill',
+     // Use "iso" as the data source for this layer
+     'source': 'iso',
+     'layout': {},
+     'paint': {
+       // The fill color for the layer is set to a light grey, edit the code below to change the color of the isochrone polygons
+       'fill-color': '#515151',
+       'fill-opacity': 0.3
+     }
+   }, "poi-label");
+
+  //You will use the marker coordinates specified above when making the API call, insert that portion Here!!!!!!!!!!!
+
+   // Make the API call
+   getIso();
+  });
+
+  // Target the "params" form in the HTML portion of your code
+  var params = document.getElementById('params');
+
+  // When a user changes the value of travel mode or time duration by clicking a button, change the parameter's value and make the API query again
+  params.addEventListener('change', function(e) {
+    if (e.target.name === 'profile') {
+      profile = e.target.value;
+      getIso();
+    } else if (e.target.name === 'duration') {
+      minutes = e.target.value;
+      getIso();
+    }
+  });
+</code></pre>
+                    <li>The function, getiso, will be used to send the query to the API and receive the response on where to draw the appropriate isochrone boundary, while map.addLayer will make the iso response appear on the map as a geojson layer, in this case a polygon.</li><br>
+                      <ul>Notice that we are creating several variables to use in the function.
+                            <li><b>urlBase</b> is the absolute url to the Mapbox API<p>
+                            <li><b>lon</b> and <b>lat</b> define the point which distances will be routed from. In this case it is lon/lat of NEIU
+                            <li><b>profile</b> and <b>minutes</b> define the mode of travel and time duration, these should be the default options that are checked earlier, so make the same edits here if you changed them earlier.
+                            <li><b>query</b> will comprise the string submitted to the API, the default would appear as 'https://api.mapbox.com/isochrone/v1/mapbox/driving/-87.7187,41.9804?contours_minutes=30&polygons=true&access_token=yourMapboxToken’
+                            <li><b>params</b> will be used to change the parameters to build the string, based on the toggled options</ul>
+
+
+                       <p>By including the optional parameter polygons=true, this will make the function draw filled polygons instead of just lines. This is easier to visualize in this case, but there may be times when only lines are desired. That portion can be removed from the query variable to make lines instead. </li>
+
+                       <br>The map.addLayer function contains some formatting for the new geojson layer which will draw the isochrones. You may change the fill color and opacity here. I would recommend leaving some transparency to see the streets below.
+                       <br>With more sophisticated coding, this could be expanded upon to combine with multiple layers or points. Check out <a href='https://demos.mapbox.com/isochrone_intersect/'>Meet me in the middle</a> for an example using two points. This is combined with another API to make locations of bars/restaurants appear in the area each isochrone intersects. We will try out a way of doing something simpler later.
+                       <br><br>For now, we will continue to focus on a single point.
+                       <br><li> Reload the map and it should appear like the one below. Try out the toggles. They should function now, and you can observe the boundaries change.</li>
+                       <img src="FirstIsochrone.jpg" alt="FirstIsochrone">
+
+                     <!-- <iframe src="map/map.html" width=100% height=450 frameborder=0></iframe><br> -->
+
+
+                <p><a id="Marker" title="Add a Marker" class="toc-item"></a></p>
+                <h2><i class="fa fa-map"></i>Add a Marker</h2>
+                  <ul>
+
+                      <li>It is not clear though where the central feature is. We should add a marker, so it is clear where the point of origin is.
+                      <li>To do this, add the final two parts of code below. This will create a new variable to be used as a marker, define the location of the marker, and add it to the map.</li> <br>
+<b>Insert this section into the code before the map loads the iso layers</b>
+<pre><code class="language-javascript">
+  //NEIU Marker, which will define the variable and color, notice that the location is a separate variable and the two will be combined later.
+  var marker = new mapboxgl.Marker({
+   'color': '#133CF3' //change this to edit the pin marker
+  });
+
+  // Create a LngLat object to use in the marker initialization
+  // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
+  var lngLat = {
+   lon: lon,
+   lat: lat
+  };
+
+</code></pre>
+
+<b>Insert this portion above the getiso() function that will ping the API</b>
+
+<pre><code class="language-javascript">
+  // Initialize the marker at the query coordinates
+  marker.setLngLat(lngLat).addTo(map);
+</code></pre>
+
+
+                      <li>Reload the map and you should see a blue marker at NEIU’s location. Edit the color code in the marker section if you want it to appear other than blue or apply some more advanced formatting. <br>
+                                   <iframe src="https://abhill11.github.io/Lab8_CompletedCode/" width=100% height=450 frameborder=0></iframe><br>
+                        <!-- <img src="Marker.jpg" alt="Marker"> -->
+                          <p>Compare to the <a href="https://github.com/abhill11/Lab8_CompletedCode/blob/gh-pages/IsochroneNEIU_CompletedCode.html">IsochroneNEIU_CompletedCode.html</a> if you are unable to make yours work. Just be sure to add your access token. You may also access the full screen <a href="https://abhill11.github.io/Lab8_CompletedCode/">Map</a>
+
+                <p><a id="TwoPoints" title="Two Points" class="toc-item"></a></p>
+                <h2><i class="fa fa-map"></i>Make Isochrones for Two Points</h2>
+                <ul>
+                  <li>Should you want to compare the area that can be accessed from two different points within the same time frame, like in the Meet in the Middle Demo. There are several ways this can be accomplished, but with our current map it can be made possible by duplicating the set of functions and variables that ping the API and draw the isochrone layers and editing them for an additional location.
+                    <li> You can insert the following code into your existing file to try out a second point. This may work best for you with the unedited code from above since the profiles and times need to be matched in both to work with the controls. If you made changes, just make sure to update to match in the second set or work with the <a href="https://github.com/abhill11/Lab8_CompletedCode/blob/gh-pages/IsochroneNEIU_CompletedCode.html">IsochroneNEIU_CompletedCode.html</a> for the next portion and make edits to both later. </li><br>
+                    <li>Insert this next code in at the end of the body portion, just before the script end tag. </li>
+                    </li><br>
+                  </ul>
+
+<pre><code class="language-javaScript">
+  //---------------------------------------First API Inquery Above, 2nd below------------------------------------------------------------------
+   var urlBase2 = 'https://api.mapbox.com/isochrone/v1/mapbox/'; //the same function as above, just with 2 added to the end of the variable names to make them unique
+   var lon2 = -87.805833;
+   var lat2 = 41.908760;
+   var profile = 'driving';
+   var minutes = 30;
+
+   function getIso2() {
+     var query2 = urlBase2 + profile + '/' + lon2 + ',' + lat2 + '?contours_minutes=' + minutes + '&polygons=true&access_token=' + mapboxgl.accessToken; //same as above just with 2 added to the end of the variables to make them unique
+
+     $.ajax({
+       method: 'GET',
+       url: query2
+     }).done(function(data) {
+       // Set the 'iso' source's data to what's returned by the API query
+       map.getSource('iso2').setData(data); //updated to iso2
+     })
+   };
+
+   var marker2 = new mapboxgl.Marker({ //a second marker to denote the additional point
+    'color': 'BFEE0F' //change this to edit the pin marker
+   });
+
+   var lngLat2 = {
+    lon: lon2,
+    lat: lat2
+   };
+
+    map.on('load', function() {
+     // When the map loads, add the source and layer
+     map.addSource('iso2', {
+       type: 'geojson',
+       data: {
+         'type': 'FeatureCollection',
+         'features': []
+       }
+     });
+
+     map.addLayer({
+       'id': 'isoLayer2',
+       'type': 'fill',
+       // Use "iso" as the data source for this layer
+       'source': 'iso2',
+       'layout': {},
+       'paint': {
+         // The fill color for the layer is set to a light purple, edit to change the color of the isochrone polygon
+         'fill-color': '#515151',
+         'fill-opacity': 0.3
+       }
+     }, "poi-label");
+
+     // Initialize the marker at the query coordinates
+    marker2.setLngLat(lngLat2).addTo(map);
+
+
+     // Make the API call
+     getIso2();
+    });
+
+
+    //Able to Reuse the Params variable from before since it just deals with the toggles. This portion does have to be added to the second, getiso2, function to update it as well
+    params.addEventListener('change', function(e) {
+      if (e.target.name === 'profile') {
+        profile = e.target.value;
+        getIso2();
+      } else if (e.target.name === 'duration') {
+        minutes = e.target.value;
+        getIso2();
+      }
+    });
+
+</code></pre>
+
+<p>Your map should look like the one below
+ <iframe src="https://abhill11.github.io/Lab8_TwoPoints/" width=100% height=450 frameborder=0></iframe><br>
+  <!-- <img src="TwoPoints.jpg" alt="TwoPoints"> -->
+  <li>This is just a random point at an intersection of some major streets. You may adjust the long/lat values to move the point anywhere you like. If the sidebar control options match between the two, switching an option will redraw both isochrones simultaneously. Using the same color for both and leaving them transparent will make it clear where the areas overlap and you can work out which side is which, but if you want to visualize the individual boundaries better, you may try changing the color code for the isochrones to something that blends well(perhaps blue and red, which should appear purple at the overlap) <p>
+    <li>You may review the completed code in the <a href="https://github.com/abhill11/Lab8_TwoPoints/blob/gh-pages/Lab8_TwoPoints.html">Lab8_TwoPoints.html</a> or view the full screen <a href="https://abhill11.github.io/Lab8_TwoPoints/">Map</a></li></li>
+
+    <p><a id="Deliverables" title="Deliverables" class="toc-item"></a></p>
+    <h2><i class="fa fa-map"></i>Deliverables</h2>
+
+    <li>Produce a map using the interactive controls for a point other than NEIU with a fourth time interval in the control. Customize the color of the isochrones and point-marker and change the map center accordingly.<p>
+      <li>Produce a second map for, somewhere other than NEIU, that is either a two-point, interactive control or a concentric-isochrone, static map like that in the extra content. Customize the colors and time intervals for either option and adjust the map centers accordingly.
+        <li>Host both as individual links and submit through D2L.</li></li></li>
+ <br><br><br><br>
+
+<p><a id="ExtraContent" title="ExtraContent" class="toc-item"></a></p>
+<h2><i class="fa fa-map"></i>Extra Content/Resources</h2>
+
+<li>It is also possible to display several isochrones at once as they are concentric in nature. Mapbox had a live demo of a sophisticated example of this, but it seems to be down at the time of writing this. It may be accessed via either of these links if it comes back up
+<a href="https://blog.mapbox.com/add-isochrones-to-your-next-application-e9e84a62345f">https://blog.mapbox.com/add-isochrones-to-your-next-application-e9e84a62345f</a><br>
+  <a href="https://github.com/mapbox/mapbox-isochrone">https://github.com/mapbox/mapbox-isochrone</a>
+  <li>You may obtain a simple code to accomplish this by looking at the <a href="https://github.com/abhill11/Lab8_Extra_MultipleIsochrones/blob/gh-pages/Lab8_Extra_MultipleIsochrones.html">Lab8_Extra_MultipleIsochrones.html</a> Use this code in a new html file, just be sure to add your access token and check the notes to help make changes.
+  <p><li>The “when, if” function was obtained from <a href="https://gis.stackexchange.com/questions/378172/creating-multiple-points-on-mapbox-isochrone-map">This Stack Exchange Thread.</a><p></li></li></p>
+
+      <li>It will appear like the map, below. You would just need to add a legend to indicate the different values if making a map for another purpose. With more coding it would also be possible to alter the colors of the individual isochrones, but the graduated color effect achieved by the transparency works pretty well.</li>
+
+     <iframe src="https://abhill11.github.io/Lab8_Extra_MultipleIsochrones/" width=100% height=450 frameborder=0></iframe><br>
+     Here is the full screen <a href="https://abhill11.github.io/Lab8_Extra_MultipleIsochrones/">Map</a>.
+        <!-- <img src="MultipleIsochrone.jpg" alt="MultiIsochrone"> -->
+        <p>
+          There are also several options out there for making isochrones or similar routing. <a href="https://developer.here.com/">Here Technology</a> mentioned their routing and other navigation API’s.  <p>
+            There are several free interactive isochrone applications here are a few others to look at.
+            <li><a href="https://www.iso4app.net/demo.jsp">Iso4app</a>
+            <li><a href="https://docs.mapbox.com/playground/isochrone/">Mapbox Playground - Isochrone</a>
+            <li><a href="https://traveltime.com/blog/free-isochrone-map-generator">Travel Time</a></li></li></li><p>
+              You may also wish to explore <a href="https://docs.mapbox.com/studio-manual/reference/datasets/">Mapbox's studio</a> and upload your own Geojson data, which can be used to make tilesets, and then custom map styles which contain the data and would be added to the map all from the style url. See an example <a href="https://abhill11.github.io/Lab8_Isochrone_Style_Parks/">here</a> which has polygons for City parks greater than 5 acres. Labels/popups may also be added by referencing the dataset within the code.
+
+
+
+
+
+            </div>
+            </div>
+        </article>
+
+          <footer>
+            <div class="wrap">
+              <P>Created by Blake Hill</p>
+              <p>Template Copyright &copy; of Ting Liu 2020</p>
+                <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="https://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
+            </div>
+          </footer>
+
+            <script src="prism.js"></script>
+
+     </body>
+</html>
