@@ -53,8 +53,8 @@
 
                   <p><a id="overview" title="Overview" class="toc-item"></a></p>
                   <h3><i class="fa fa-asterisk"></i> Overview</h3>
-                    <p><i class="fa fa-spinner fa-spin"></i>  The code and this tutorial were adapted from <a href='https://docs.mapbox.com/help/tutorials/get-started-isochrone-api/'>Mapbox's Tutorial</a></p>
-                    <p><i class="fa fa-spinner fa-spin"></i>  You You will need to be able to login to your <a href='https://mapbox.com'>Mapbox</a> account, that was created earlier in the course, to get your personal mapbox Access Token. You may also wish to use their studio to customize the look of maps later </p>
+                    <p><i class="fa fa-spinner fa-spin"></i>  The code and this tutorial were adapted from <a href='https://docs.mapbox.com/help/tutorials/get-started-isochrone-api/' target="_blank" rel="noopener noreferrer">Mapbox's Tutorial</a></p>
+                    <p><i class="fa fa-spinner fa-spin"></i>  You You will need to be able to login to your <a href='https://mapbox.com' target="_blank" rel="noopener noreferrer">Mapbox</a> account, that was created earlier in the course, to get your personal mapbox Access Token. You may also wish to use their studio to customize the look of maps later </p>
                     <p><i class="fa fa-spinner fa-spin"></i>  This API from Mapbox will create Isochrones in a specified interval around a central point. This works by inquiring to Mapbox’s API servers to get routing information away from a specified point. Mode of transportation and time of travel can be selected by a floating control panel on the map. </p>
                     <p><i class="fa fa-spinner fa-spin"></i>  API stands for Application Programming Interface, which means that it is a prewritten and reusable portion of code that will perform a certain function. This function can be called upon and used by others without them needing to write from scratch or even know what the actual coding looks like or how to write it.</p>
                     <p><i class="fa fa-spinner fa-spin"></i>  Isochrone refers to a line that bounds equal travel times from a given location. They appear on a map like contour lines on a topographic elevation map or may also be displayed as polygons. They are irregular in shape so the Isochrone line may appear as a diamond or cross depending upon the street network or skewed with tendrils traveling down interstates and major roads. </P>
@@ -67,9 +67,9 @@
                    *Check the comments of the code as you go along for help on where to insert later sections*<br>
                    <ul>
                        <li>Notice that this code will be importing some new libraries. More information can be found at the library links<br>
-                            Mapbox GL JS: <a href='https://docs.mapbox.com/mapbox-gl-js/api/'>https://docs.mapbox.com/mapbox-gl-js/api/</a> <br>
-                            Assembly: <a href='https://labs.mapbox.com/assembly/'>https://labs.mapbox.com/assembly/</a>  <br>
-                            JQuery: <a href='https://jquery.com/'>https://jquery.com/</a>                  </li></ul><br>
+                            Mapbox GL JS: <a href='https://docs.mapbox.com/mapbox-gl-js/api/' target="_blank" rel="noopener noreferrer">https://docs.mapbox.com/mapbox-gl-js/api/</a> <br>
+                            Assembly: <a href='https://labs.mapbox.com/assembly/' target="_blank" rel="noopener noreferrer">https://labs.mapbox.com/assembly/</a>  <br>
+                            JQuery: <a href='https://jquery.com/' target="_blank" rel="noopener noreferrer">https://jquery.com/</a>                  </li></ul><br>
 
 
 <!-- The first Code Block -->
@@ -135,7 +135,7 @@
                     <li> You will see your access token on the next page > Copy and paste it in the correct spot within the code</li>
                     <img src="MapboxAccess.jpg" alt="MapboxAccessToken">
 
-                    <li> The center here is NEIU as that is what is being used later as the isochrone origin point. Note that this center only defines the center for the map to display. This does not have to be the same as the point to use for isochrones, but it should be somewhere nearby of course. <p>
+                    <li> The center here is NEIU as that is what is being used later as the isochrone origin point. Note that this center only defines the center for the map to display. This does not have to be the same as the point to use for isochrones, but of course it should be somewhere nearby. <p>
                       <li>Your map should appear like the one below, full screen with a street basemap. If you wish to change the base layer, you may replace the style portion of the map: 'mapbox://styles/mapbox/streets-v11' with another option. There are several available through your mapbox account and can be customized in the studio. </li></li>
 
                     <img src="Basemap.jpg" alt="Basemap">
@@ -317,7 +317,7 @@ The section from &lt;label&gt; to &lt;/Label&gt; below specifies the time interv
                        <p>By including the optional parameter polygons=true, this will make the function draw filled polygons instead of just lines. This is easier to visualize in this case, but there may be times when only lines are desired. That portion can be removed from the query variable to make lines instead. </li>
 
                        <br>The map.addLayer function contains some formatting for the new geojson layer which will draw the isochrones. You may change the fill color and opacity here. I would recommend leaving some transparency to see the streets below.
-                       <br><li>With more sophisticated coding, this could be combined with multiple layers or points. Check out <a href='https://demos.mapbox.com/isochrone_intersect/'>Meet me in the middle</a> for an example using two points in combination with another API.
+                       <br><li>With more sophisticated coding, this could be combined with multiple layers or points. Check out <a href='https://demos.mapbox.com/isochrone_intersect/' target="_blank" rel="noopener noreferrer">Meet me in the middle</a> for an example using two points in combination with another API.
                        <br>We will try out a way of doing something simpler later.</li>
                        <br>For now, we will continue to focus on a single point.
                        <br><li> Reload the map and it should appear like the one below. Try out the toggles. They should function now, and you can observe the boundaries change.</li>
@@ -359,7 +359,7 @@ The section from &lt;label&gt; to &lt;/Label&gt; below specifies the time interv
                       <li>Reload the map and you should see a blue marker at NEIU’s location. Edit the color code in the marker section if you want it to appear other than blue. <br>
                                    <iframe src="Lab8_CompletedCode.html" width=100% height=450 frameborder=0></iframe><br>
                         <!-- <img src="Marker.jpg" alt="Marker"> -->
-                          <p>Compare to the <a href="https://github.com/abhill11/Lab8_CompletedCode/blob/gh-pages/IsochroneNEIU_CompletedCode.html">IsochroneNEIU_CompletedCode.html</a> if you are unable to make yours work. Just be sure to add your access token. You may also access the full screen <a href="https://abhill11.github.io/Lab8_CompletedCode/">Map</a>
+                          <p>Compare to the <a href="https://github.com/abhill11/Lab8_CompletedCode/blob/gh-pages/IsochroneNEIU_CompletedCode.html" target="_blank" rel="noopener noreferrer">IsochroneNEIU_CompletedCode.html</a> if you are unable to make yours work. Just be sure to add your access token. You may also access the full screen <a href="https://abhill11.github.io/Lab8_CompletedCode/">Map</a>
 
                 <p><a id="TwoPoints" title="Two Points" class="toc-item"></a></p>
                 <h2><i class="fa fa-map"></i>Make Isochrones for Two Points</h2>
@@ -449,7 +449,7 @@ The section from &lt;label&gt; to &lt;/Label&gt; below specifies the time interv
  <iframe src="Lab8_TwoPoints.html" width=100% height=450 frameborder=0></iframe><br>
   <!-- <img src="TwoPoints.jpg" alt="TwoPoints"> -->
   <li>This is just a random point at an intersection of some major streets. You may adjust the long/lat values to move the point anywhere you like. If the sidebar control options match between the two, switching an option will redraw both isochrones simultaneously. Using the same color for both and leaving them transparent will make it clear where the areas overlap and you can work out which side is which, but if you want to visualize the individual boundaries better, you may try changing the color code for the isochrones to something that blends well(perhaps blue and red, which should appear purple at the overlap) <p>
-    <li>You may review the completed code in the <a href="https://github.com/abhill11/Lab8_TwoPoints/blob/gh-pages/Lab8_TwoPoints.html">Lab8_TwoPoints.html</a> or view the full screen <a href="https://abhill11.github.io/Lab8_TwoPoints/">Map</a></li></li>
+    <li>You may review the completed code in the <a href="https://github.com/abhill11/Lab8_TwoPoints/blob/gh-pages/Lab8_TwoPoints.html" target="_blank" rel="noopener noreferrer">Lab8_TwoPoints.html</a> or view the full screen <a href="https://abhill11.github.io/Lab8_TwoPoints/">Map</a></li></li>
 
     <p><a id="Deliverables" title="Deliverables" class="toc-item"></a></p>
     <h2><i class="fa fa-map"></i>Deliverables</h2>
@@ -463,10 +463,10 @@ The section from &lt;label&gt; to &lt;/Label&gt; below specifies the time interv
 <h2><i class="fa fa-map"></i>Extra Content/Resources</h2>
 
 <li>It is also possible to display several isochrones at once as they are concentric in nature. Mapbox had a live demo of a sophisticated example of this, but it seems to be down at the time of writing this. It may be accessed via either of these links if it comes back up
-<a href="https://blog.mapbox.com/add-isochrones-to-your-next-application-e9e84a62345f">https://blog.mapbox.com/add-isochrones-to-your-next-application-e9e84a62345f</a><br>
+<a href="https://blog.mapbox.com/add-isochrones-to-your-next-application-e9e84a62345f" target="_blank" rel="noopener noreferrer">https://blog.mapbox.com/add-isochrones-to-your-next-application-e9e84a62345f</a><br>
   <a href="https://github.com/mapbox/mapbox-isochrone">https://github.com/mapbox/mapbox-isochrone</a>
-  <li>You may obtain a simple code to accomplish this by looking at the <a href="https://github.com/abhill11/Lab8_Extra_MultipleIsochrones/blob/gh-pages/Lab8_Extra_MultipleIsochrones.html">Lab8_Extra_MultipleIsochrones.html</a> Use this code in a new html file, just be sure to add your access token and check the notes to help make changes.
-  <p><li>The “when, if” function was obtained from <a href="https://gis.stackexchange.com/questions/378172/creating-multiple-points-on-mapbox-isochrone-map">This Stack Exchange Thread</a> and works well, but there are likely other ways to accomplish this<p></li></li></p>
+  <li>You may obtain a simple code to accomplish this by looking at the <a href="https://github.com/abhill11/Lab8_Extra_MultipleIsochrones/blob/gh-pages/Lab8_Extra_MultipleIsochrones.html" target="_blank" rel="noopener noreferrer">Lab8_Extra_MultipleIsochrones.html</a> Use this code in a new html file, just be sure to add your access token and check the notes to help make changes.
+  <p><li>The “when, if” function was obtained from <a href="https://gis.stackexchange.com/questions/378172/creating-multiple-points-on-mapbox-isochrone-map" target="_blank" rel="noopener noreferrer">This Stack Exchange Thread</a> and works well, but there are likely other ways to accomplish this<p></li></li></p>
 
       <li>It will appear like the map, below. You would just need to add a legend to indicate the different values if making a map for another purpose. With more coding it would also be possible to alter the colors of the individual isochrones, but the graduated color effect achieved by the transparency works pretty well.</li>
 
@@ -474,12 +474,12 @@ The section from &lt;label&gt; to &lt;/Label&gt; below specifies the time interv
      Here is the full screen <a href="https://abhill11.github.io/Lab8_Extra_MultipleIsochrones/">Map</a>.
         <!-- <img src="MultipleIsochrone.jpg" alt="MultiIsochrone"> -->
         <p>
-          There are also several options out there for making isochrones or similar routing tools. <a href="https://developer.here.com/">Here Technology</a> mentioned their routing and other navigation API’s.  <p>
+          There are also several options out there for making isochrones or similar routing tools. <a href="https://developer.here.com/" target="_blank" rel="noopener noreferrer">Here Technology</a> mentioned their routing and other navigation API’s.  <p>
             Here are some free, interactive isochrone applications to check out.
-            <li><a href="https://www.iso4app.net/demo.jsp">Iso4app</a>
-            <li><a href="https://docs.mapbox.com/playground/isochrone/">Mapbox Playground - Isochrone</a>
-            <li><a href="https://traveltime.com/blog/free-isochrone-map-generator">Travel Time</a></li></li></li><p>
-              You may also wish to explore <a href="https://docs.mapbox.com/studio-manual/reference/datasets/">Mapbox's studio</a> and upload your own Geojson data, which can be used to make tilesets and custom map styles which contain the data and would be added to the map all from the style url. See an example <a href="https://abhill11.github.io/Lab8_Isochrone_Style_Parks/">here</a> which has polygons for City parks greater than 5 acres. Labels/popups may also be added by referencing the dataset within the code.
+            <li><a href="https://www.iso4app.net/demo.jsp" target="_blank" rel="noopener noreferrer">Iso4app</a>
+            <li><a href="https://docs.mapbox.com/playground/isochrone/" target="_blank" rel="noopener noreferrer">Mapbox Playground - Isochrone</a>
+            <li><a href="https://traveltime.com/blog/free-isochrone-map-generator" target="_blank" rel="noopener noreferrer">Travel Time</a></li></li></li><p>
+              You may also wish to explore <a href="https://docs.mapbox.com/studio-manual/reference/datasets/" target="_blank" rel="noopener noreferrer">Mapbox's studio</a> and upload your own Geojson data, which can be used to make tilesets and custom map styles which contain the data and would be added to the map all from the style url. See an example <a href="https://abhill11.github.io/Lab8_Isochrone_Style_Parks/">here</a> which has polygons for City parks greater than 5 acres. Labels/popups may also be added by referencing the dataset within the code.
 
 
 
@@ -493,7 +493,7 @@ The section from &lt;label&gt; to &lt;/Label&gt; below specifies the time interv
             <div class="wrap">
               <P>Created by Blake Hill</p>
               <p>Template Copyright &copy; of Ting Liu 2020</p>
-                <div>Icons obtained from <a href="https://fontawesome.com/v4.7.0/icons/">FontAwesome</a></div>
+                <div>Icons obtained from <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank" rel="noopener noreferrer">FontAwesome</a></div>
 
             </div>
           </footer>
